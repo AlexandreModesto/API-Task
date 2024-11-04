@@ -29,7 +29,7 @@ public class TaskService {
     }
 
     public List<Task> getAll(){
-        return repository.findAll();
+        return repository.findAllByOrderByOrdemDeApresentacaoASC();
     }
 
     public void register(Task obj){

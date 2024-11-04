@@ -35,9 +35,10 @@
                 return response.json();
             })
             .then(data => {
+                int index =0;
                 const resultDiv = document.getElementById('result');
                 resultDiv.innerHTML = ''; // Limpa resultados anteriores
-                data.forEach(item => {
+                data.forEach((item,index) => {
                     const divCard =document.createElement("div");
                     if(item.custo>=1000){
                         divCard.className="card text-bg-light";
@@ -45,6 +46,7 @@
                         divCard.className="card";
                     }
                     divCard.style.marginBottom="10px";
+                    divCard.id=index;
                     const tarefa = document.createElement('div');
                     tarefa.className = "card-body";
 
@@ -80,7 +82,7 @@
 
                     const div4 =document.createElement("div");
                     div4.style.display="inline-block";
-                    div4.style.marginLeft="30%";
+                    div4.style.marginLeft="50%";
                     const buttonEdit =document.createElement("button")
                     buttonEdit.className="btn btn-primary"
                     buttonEdit.textContent="Editar";
@@ -89,6 +91,45 @@
                     buttonRemove.textContent="Excluir";
                     buttonRemove.style.marginLeft="5px";
                     buttonRemove.className="btn btn-danger";
+
+                    if(index!==data.lenght-1){
+                        const buttonDown =document.createElement("button")
+                        buttonDown.textContent="Descer";
+                        buttonDown.style.marginLeft="5px";
+                        buttonDown.className="btn btn-secondary";
+                        div4.appendChild(buttonDown);
+                    }
+                    if(index!==0){
+                        const buttonUp =document.createElement("button")
+                        buttonUp.textContent="Subir";
+                        buttonUp.style.marginLeft="5px";
+                        buttonUp.className="btn btn-secondary";
+                        buttonUp.onclick=function(){
+                                        const dados = {
+                                                nomeDaTarefa: `${item.nomeDaTarefa}`,
+                                                custo: `${item.custo}`,
+                                                dataLimite: `${item.dataLimite}`,
+                                                ordemDeApresentacao:index-1
+                                            };
+
+                                            fetch(apiUrl, {
+                                                method: 'PUT',
+                                                headers: {
+                                                    'Content-Type': 'application/json'
+                                                },
+                                                body: JSON.stringify(dados)
+                                            })
+                                            .then(response => {
+                                                if (!response.ok) {
+                                                    throw new Error('Erro na API: ' + response.status);
+                                                }
+                                                return location.reload();
+                                            })
+
+                        }
+
+                        div4.appendChild(buttonUp);
+                    }
                     div4.appendChild(buttonEdit);
                     div4.appendChild(buttonRemove);
 
