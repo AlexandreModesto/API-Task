@@ -16,4 +16,7 @@ public interface TaskRepository extends JpaRepository<Task,Long> {
 
     @Query("SELECT t FROM Task t ORDER BY t.OrdemDeApresentacao ASC")
     public List<Task> findAllByOrderByOrdemDeApresentacaoASC();
+
+    @Query("UPDATE Task t SET t.OrdemDeApresentacao=:newPosition WHERE t.id=:id")
+    public void setPosition(Long newPosition,Long id);
 }

@@ -106,19 +106,11 @@
                         buttonUp.style.marginLeft="5px";
                         buttonUp.className="btn btn-secondary";
                         buttonUp.onclick=function(){
-                                        const dados = {
-                                                nomeDaTarefa: `${item.nomeDaTarefa}`,
-                                                custo: `${item.custo}`,
-                                                dataLimite: `${item.dataLimite}`,
-                                                ordemDeApresentacao:index-1
-                                            };
-
-                                            fetch(apiUrl+`edit/${item.id}`, {
+                                            fetch(apiUrl+`up/${item.id}`, {
                                                 method: 'PUT',
                                                 headers: {
                                                     'Content-Type': 'application/json'
-                                                },
-                                                body: JSON.stringify(dados)
+                                                }
                                             })
                                             .then(response => {
                                                 if (!response.ok) {

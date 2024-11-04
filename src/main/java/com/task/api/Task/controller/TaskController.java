@@ -43,7 +43,7 @@ public class TaskController {
         }
     }
 
-    @PutMapping(value = "edit/{id}")
+    @PatchMapping(value = "edit/{id}")
     public ResponseEntity<?> editTask(@RequestBody @Validated Task task, @PathVariable(value = "id")Long id){
         Optional<Task> oldTask = service.getInfo(id);
         if(oldTask.isPresent()){
@@ -56,6 +56,13 @@ public class TaskController {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.badRequest().build();
+        }
+    }
+    @PutMapping("up/{id}")
+    public ResponseEntity<?> upPosition(@PathVariable(value = "id")Long id){
+        Optional<Task> task = service.getInfo(id);
+        if(task.isPresent()){
+
         }
     }
 
