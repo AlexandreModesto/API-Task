@@ -48,8 +48,10 @@
                     div2.className = "inline";
 
                     const div3 = document.createElement('div');
+                    div3.style.display="inline-block";
                     const cost = document.createElement('p');
                     cost.textContent = `Custo: R$ ${item.custo.toFixed(2)}`;
+                    cost.style.display="inline-block";
                     const dateL = document.createElement('p');
                     const dataLimite = new Date(item.dataLimite);
                     const dataFormatada = dataLimite.toLocaleDateString('pt-BR', {
@@ -58,6 +60,7 @@
                         day: '2-digit'
                     });
                     dateL.textContent = `Data Limite: ${dataFormatada}`;
+                    dateL.style.display="inline-block";
                     div3.appendChild(cost);
                     div3.appendChild(dateL);
 
