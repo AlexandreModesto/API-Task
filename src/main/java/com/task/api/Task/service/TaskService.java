@@ -1,7 +1,7 @@
 package com.task.api.Task.service;
 
 import com.task.api.Task.model.Task;
-import com.task.api.Task.repository.RepositoryTask;
+import com.task.api.Task.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,21 +9,23 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ServiceTask  {
+public class TaskService {
 
     @Autowired
-    private RepositoryTask repository;
+    private TaskRepository repository;
 
     public Optional<Task> getInfo(Long id){
         return repository.findById(id);
     }
 
     public Optional<Task> checkPosition(Integer position){
-        return repository.findByPosition(position);
+        Task task=repository.findByPosition(position);
+        return Optional.ofNullable(task);
     }
 
     public Optional<Task> checkName(String name){
-        return repository.findByName(name);
+        Task task =repository.findByName(name);
+        return Optional.ofNullable(task);
     }
 
     public List<Task> getAll(){

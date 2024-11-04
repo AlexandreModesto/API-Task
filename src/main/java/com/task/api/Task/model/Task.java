@@ -5,7 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.TimeZone;
 
 @Entity
 @Data
@@ -17,21 +18,29 @@ public class Task {
     private Long id;
 
     @Column
-    private String name;
+    private String NomeDaTarefa;
 
     @Column
-    private double cost;
+    private double Custo;
 
     @Column
-    private Date dateLimit;
+    private LocalDate DataLimite;
 
     @Column
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer position;
+    private Long OrdemDeApresentacao;
 
-    public Task(String name,double cost,Date dateLimit){
-        this.name=name;
-        this.cost=cost;
-        this.dateLimit=dateLimit;
+
+    public Task(String name, double cost, String dateLimitS) {
+        this.NomeDaTarefa = name;
+        this.Custo = cost;
+        TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
+        LocalDate dateLimit = LocalDate.parse(dateLimitS);
+        LocalDate dt = LocalDate.of(dateLimit.getYear(), dateLimit.getMonth(), dateLimit.getDayOfMonth());
+        this.DataLimite = dt;
+    }
+
+    @PostPersist
+    private void atribuirOrdemDeApresentacao() {
+        this.OrdemDeApresentacao = this.id;
     }
 }

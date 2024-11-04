@@ -1,6 +1,6 @@
 package com.task.api.Task.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-public record TaskDTO(String name, double cost, Date dateLimit) {
+public record TaskDTO(String name, double cost, String dateLimit) {
 }

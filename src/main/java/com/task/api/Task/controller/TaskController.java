@@ -2,7 +2,7 @@ package com.task.api.Task.controller;
 
 import com.task.api.Task.model.Task;
 import com.task.api.Task.model.TaskDTO;
-import com.task.api.Task.service.ServiceTask;
+import com.task.api.Task.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,9 +13,9 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "task/")
-public class ControllerTask {
+public class TaskController {
     @Autowired
-    ServiceTask service;
+    TaskService service;
 
     @GetMapping
     public ResponseEntity<List<Task>> getAllTasks(){
@@ -33,8 +33,9 @@ public class ControllerTask {
 
     @PostMapping(value = "new")
     public ResponseEntity<?> newTask(@RequestBody @Validated TaskDTO data){
-        if(service.checkName(data.name()).isPresent()){
+        if(!service.checkName(data.name()).isPresent()){
             Task task =new Task(data.name(),data.cost(),data.dateLimit());
+            service.register(task);
             return ResponseEntity.ok().build();
         }else {
             return ResponseEntity.badRequest().build();
@@ -46,10 +47,10 @@ public class ControllerTask {
         Optional<Task> oldTask = service.getInfo(id);
         if(oldTask.isPresent()){
             var newTask = oldTask.get();
-            newTask.setName(task.getName());
-            newTask.setCost(task.getCost());
-            newTask.setDateLimit(task.getDateLimit());
-            newTask.setPosition(task.getPosition());
+            newTask.setNomeDaTarefa(task.getNomeDaTarefa());
+            newTask.setCusto(task.getCusto());
+            newTask.setDataLimite(task.getDataLimite());
+            newTask.setOrdemDeApresentacao(task.getOrdemDeApresentacao());
             service.register(newTask);
             return ResponseEntity.ok().build();
         } else {
