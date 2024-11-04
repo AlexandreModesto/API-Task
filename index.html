@@ -13,9 +13,9 @@
 </head>
 <body>
 <div class="container">
-<h1>Consumo de API com JavaScript</h1>
-<div id="result">
-</div>
+    <h1>Consumo de API com JavaScript</h1>
+    <div id="result">
+    </div>
 </div>
 <script>
         const apiUrl = 'https://07e3-2804-14d-6883-8ad5-626e-d3b4-2e2e-fdc1.ngrok-free.app/task/'; // URL da API
@@ -39,8 +39,8 @@
                 resultDiv.innerHTML = ''; // Limpa resultados anteriores
                 data.forEach((item,index) => {
                     const divCard =document.createElement("div");
-                    if(item.custo>=1000){
-                        divCard.className="card text-bg-light";
+                    if(item.custo>=1000.00){
+                        divCard.className="card text-bg-warning";
                     }else{
                         divCard.className="card";
                     }
@@ -81,10 +81,12 @@
 
                     const div4 =document.createElement("div");
                     div4.style.display="inline-block";
-                    div4.style.marginLeft="50%";
+                    div4.style.marginLeft="50px";
+
                     const buttonEdit =document.createElement("button")
                     buttonEdit.className="btn btn-primary"
                     buttonEdit.textContent="Editar";
+                    buttonEdit.style.marginLeft="5px";
 
                     const buttonRemove =document.createElement("button")
                     buttonRemove.textContent="Excluir";
@@ -97,7 +99,7 @@
                         buttonDown.style.marginLeft="5px";
                         buttonDown.className="btn btn-secondary";
                         div4.appendChild(buttonDown);
-                    }
+                    }else{}
                     if(index!==0){
                         const buttonUp =document.createElement("button")
                         buttonUp.textContent="Subir";
@@ -111,7 +113,7 @@
                                                 ordemDeApresentacao:index-1
                                             };
 
-                                            fetch(apiUrl, {
+                                            fetch(apiUrl+`edit/${item.id}`, {
                                                 method: 'PUT',
                                                 headers: {
                                                     'Content-Type': 'application/json'
