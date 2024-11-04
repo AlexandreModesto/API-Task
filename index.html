@@ -14,33 +14,71 @@
 <body>
 <h1>Consumo de API com JavaScript</h1>
 <button id="fetchButton">Buscar Dados</button>
-<div id="result"></div>
+<div id="result" class="card">
+</div>
 <script>
-        document.getElementById('fetchButton').addEventListener('click', () => {
-            const apiUrl = 'https://07e3-2804-14d-6883-8ad5-626e-d3b4-2e2e-fdc1.ngrok-free.app/task/'; // URL da API
+        const apiUrl = 'https://07e3-2804-14d-6883-8ad5-626e-d3b4-2e2e-fdc1.ngrok-free.app/task/'; // URL da API
 
+        function fetchData() {
             fetch(apiUrl, {
-            method: 'GET', // Método da requisição
-            headers: {
-                'Content-Type': 'application/json',
-                'ngrok-skip-browser-warning': 'true'
-            }
-        })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Erro na API: ' + response.status);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                            data.forEach(item => {
-            const tarefa = document.createElement('div');
-            tarefa.textContent = `ID: ${item.id}, Nome: ${item.nomeDaTarefa}, Custo: R$ ${item.custo.toFixed(2)}, Data Limite: ${item.dataLimite}`;
-            resultDiv.appendChild(tarefa);
-        });
-                })
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': 'true'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro na API: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = ''; // Limpa resultados anteriores
+                data.forEach(item => {
+                    const tarefa = document.createElement('div');
+                    tarefa.className = "body-card";
 
-        });
+                    const title = document.createElement("h5");
+                    title.className = "title-card";
+                    title.textContent=`${item.nomeDaTarefa}`
+
+                    const div2 = document.createElement('div');
+                    div2.className = "inline";
+
+                    const div3 = document.createElement('div');
+                    const cost = document.createElement('p');
+                    cost.textContent = `Custo: R$ ${item.custo.toFixed(2)}`;
+                    const dateL = document.createElement('p');
+                    dateL.textContent = `Data Limite: ${item.dataLimite}`;
+                    div3.appendChild(cost);
+                    div3.appendChild(dateL);
+
+                    const div4 =document.createElement("div");
+                    div4.className="inline";
+                    const buttonEdit =document.createElement("button")
+                    buttonEdit.textContent="Editar";
+                    const buttonRemove =document.createElement("button")
+                    buttonRemove.textContent="Excluir";
+                    div4.appendChild(buttonEdit);
+                    div4.appendChild(buttonRemove);
+
+                    div2.appendChild(div3);
+                    div2.appendChild(div4);
+                    tarefa.appendChild(title);
+                    tarefa.appendChild(div2);
+                    resultDiv.appendChild(tarefa);
+                });
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                const resultDiv = document.getElementById('result');
+                resultDiv.textContent = 'Falha ao carregar os dados.';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchData);
 </script>
 </body>
 </html>
