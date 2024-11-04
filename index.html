@@ -13,8 +13,7 @@
 </head>
 <body>
 <h1>Consumo de API com JavaScript</h1>
-<button id="fetchButton">Buscar Dados</button>
-<div id="result" class="card">
+<div id="result">
 </div>
 <script>
         const apiUrl = 'https://07e3-2804-14d-6883-8ad5-626e-d3b4-2e2e-fdc1.ngrok-free.app/task/'; // URL da API
@@ -37,6 +36,8 @@
                 const resultDiv = document.getElementById('result');
                 resultDiv.innerHTML = ''; // Limpa resultados anteriores
                 data.forEach(item => {
+                    const divCard =document.createElement("div");
+                    divCard.className="card";
                     const tarefa = document.createElement('div');
                     tarefa.className = "body-card";
 
@@ -52,6 +53,7 @@
                     const cost = document.createElement('p');
                     cost.textContent = `Custo: R$ ${item.custo.toFixed(2)}`;
                     cost.style.display="inline-block";
+                    cost.style.marginRight="10%";
                     const dateL = document.createElement('p');
                     const dataLimite = new Date(item.dataLimite);
                     const dataFormatada = dataLimite.toLocaleDateString('pt-BR', {
@@ -65,11 +67,15 @@
                     div3.appendChild(dateL);
 
                     const div4 =document.createElement("div");
-                    div4.className="inline";
+                    div4.style.display="inline-block";
+                    div4.style.marginRight="30%";
                     const buttonEdit =document.createElement("button")
+                    buttonEdit.className="btn btn-primary"
                     buttonEdit.textContent="Editar";
+
                     const buttonRemove =document.createElement("button")
                     buttonRemove.textContent="Excluir";
+                    buttonRemove.className="btn btn-danger";
                     div4.appendChild(buttonEdit);
                     div4.appendChild(buttonRemove);
 
@@ -77,7 +83,8 @@
                     div2.appendChild(div4);
                     tarefa.appendChild(title);
                     tarefa.appendChild(div2);
-                    resultDiv.appendChild(tarefa);
+                    divCard.appendChild(tarefa);
+                    resultDiv.appendChild(divCard);
                 });
             })
             .catch(error => {
