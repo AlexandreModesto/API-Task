@@ -51,7 +51,13 @@
                     const cost = document.createElement('p');
                     cost.textContent = `Custo: R$ ${item.custo.toFixed(2)}`;
                     const dateL = document.createElement('p');
-                    dateL.textContent = `Data Limite: ${item.dataLimite}`;
+                    const dataLimite = new Date(item.dataLimite);
+                    const dataFormatada = dataLimite.toLocaleDateString('pt-BR', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                    });
+                    dateL.textContent = `Data Limite: ${dataFormatada}`;
                     div3.appendChild(cost);
                     div3.appendChild(dateL);
 
