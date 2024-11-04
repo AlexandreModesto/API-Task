@@ -14,12 +14,18 @@
 <body>
 <h1>Consumo de API com JavaScript</h1>
 <button id="fetchButton">Buscar Dados</button>
-<pre id="result"></pre>
+<div id="result"></div>
 <script>
         document.getElementById('fetchButton').addEventListener('click', () => {
             const apiUrl = 'https://07e3-2804-14d-6883-8ad5-626e-d3b4-2e2e-fdc1.ngrok-free.app/task/'; // URL da API
 
-            fetch(apiUrl)
+            fetch(apiUrl, {
+            method: 'GET', // Método da requisição
+            headers: {
+                'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true'
+            }
+        })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Erro na API: ' + response.status);
@@ -27,12 +33,13 @@
                     return response.json();
                 })
                 .then(data => {
-                    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                            data.forEach(item => {
+            const tarefa = document.createElement('div');
+            tarefa.textContent = `ID: ${item.id}, Nome: ${item.nomeDaTarefa}, Custo: R$ ${item.custo.toFixed(2)}, Data Limite: ${item.dataLimite}`;
+            resultDiv.appendChild(tarefa);
+        });
                 })
-                .catch(error => {
-                    console.error('Houve um problema com a requisição:', error);
-                    document.getElementById('result').textContent = 'Erro: ' + error.message;
-                });
+
         });
 </script>
 </body>
