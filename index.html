@@ -35,7 +35,6 @@
                 return response.json();
             })
             .then(data => {
-                int index =0;
                 const resultDiv = document.getElementById('result');
                 resultDiv.innerHTML = ''; // Limpa resultados anteriores
                 data.forEach((item,index) => {
