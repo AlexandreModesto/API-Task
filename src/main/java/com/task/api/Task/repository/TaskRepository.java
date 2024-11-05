@@ -9,7 +9,7 @@ import java.util.List;
 public interface TaskRepository extends JpaRepository<Task,Long> {
 
     @Query("SELECT t FROM Task t WHERE t.OrdemDeApresentacao=:position")
-    public Task findByPosition(Integer position);
+    public Task findByPosition(Long position);
 
     @Query("SELECT t FROM Task t WHERE t.NomeDaTarefa=:name")
     public Task findByName(String name);

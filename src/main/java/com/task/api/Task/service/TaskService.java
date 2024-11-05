@@ -18,7 +18,7 @@ public class TaskService {
         return repository.findById(id);
     }
 
-    public Optional<Task> checkPosition(Integer position){
+    public Optional<Task> checkPosition(Long position){
         Task task=repository.findByPosition(position);
         return Optional.ofNullable(task);
     }

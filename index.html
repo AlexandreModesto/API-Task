@@ -14,6 +14,14 @@
 <body>
 <div class="container">
     <h1>Consumo de API com JavaScript</h1>
+    <div class="card" id="editDiv" style="display:none">
+        <div class="card-text">
+            Novo Nome: <input type="text" id="name"/>
+            Nova Data: <input type="date" id="date"/>
+            Novo Custo: <input type="number" min="0.00" max="10000.00" step="0.01" id="cost"/>
+            <button class="btn btn-success" id="save">Salvar</button>
+        </div>
+    </div>
     <div id="result">
     </div>
 </div>
@@ -87,6 +95,32 @@
                     buttonEdit.className="btn btn-primary"
                     buttonEdit.textContent="Editar";
                     buttonEdit.style.marginLeft="5px";
+                    buttonEdit.onclick=function(){
+                        const editDiv = document.getElementById("editDiv");
+                        editDiv.style.display="inline-block";
+                    }
+                    const saveButton = document.getElementById("save");
+                    saveButton.onclick=function(){
+                                            const dados = {
+                                                nomeDaTarefa: document.getElementById("name").value,
+                                                custo: document.getElementById("cost").value,
+                                                dataLimite: document.getElementById("date").value,
+                                                ordemDeApresentacao: `${item.ordemDeApresentacao}`
+                                            };
+                                            fetch(apiUrl+`edit/${item.id}`, {
+                                                method: 'PATCH',
+                                                headers: {
+                                                    'Content-Type': 'application/json'
+                                                },
+                                                body: JSON.stringify(dados)
+                                            })
+                                            .then(response => {
+                                                if (!response.ok) {
+                                                    throw new Error('Erro na API: ' + response.status);
+                                                }
+                                                return location.reload();
+                                            })
+                    }
 
                     const buttonRemove =document.createElement("button")
                     buttonRemove.textContent="Excluir";
@@ -98,8 +132,25 @@
                         buttonDown.textContent="Descer";
                         buttonDown.style.marginLeft="5px";
                         buttonDown.className="btn btn-secondary";
+                        buttonDown.onclick=function(){
+                                            fetch(apiUrl+`down/${item.id}`, {
+                                                method: 'PUT',
+                                                headers: {
+                                                    'Content-Type': 'application/json'
+                                                }
+                                            })
+                                            .then(response => {
+                                                if (!response.ok) {
+                                                    throw new Error('Erro na API: ' + response.status);
+                                                }
+                                                return location.reload();
+                                            })
+
+                        }
                         div4.appendChild(buttonDown);
-                    }else{}
+                    }else{
+                        //pass
+                    }
                     if(index!==0){
                         const buttonUp =document.createElement("button")
                         buttonUp.textContent="Subir";

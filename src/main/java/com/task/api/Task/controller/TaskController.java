@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.RecursiveTask;
 
 @RestController
 @RequestMapping(value = "task/")
@@ -62,7 +63,28 @@ public class TaskController {
     public ResponseEntity<?> upPosition(@PathVariable(value = "id")Long id){
         Optional<Task> task = service.getInfo(id);
         if(task.isPresent()){
-
+            Optional<Task> task1 =service.checkPosition(id-1);
+            task1.get().setOrdemDeApresentacao(id);
+            task.get().setOrdemDeApresentacao(id-1);
+            service.register(task.get());
+            service.register(task1.get());
+            return ResponseEntity.ok().build();
+        }else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @PutMapping("down/{id}")
+    public ResponseEntity<?> downPosition(@PathVariable(value = "id")Long id){
+        Optional<Task> task = service.getInfo(id);
+        if(task.isPresent()){
+            Optional<Task> task1 =service.checkPosition(id+1);
+            task1.get().setOrdemDeApresentacao(id);
+            task.get().setOrdemDeApresentacao(id+1);
+            service.register(task.get());
+            service.register(task1.get());
+            return ResponseEntity.ok().build();
+        }else {
+            return ResponseEntity.notFound().build();
         }
     }
 
