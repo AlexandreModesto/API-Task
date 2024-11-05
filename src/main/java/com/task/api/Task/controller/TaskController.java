@@ -36,6 +36,7 @@ public class TaskController {
     @PostMapping(value = "new")
     public ResponseEntity<?> newTask(@RequestBody @Validated TaskDTO data){
         if(!service.checkName(data.name()).isPresent()){
+            System.out.println(data.dateLimit());
             Task task =new Task(data.name(),data.cost(),data.dateLimit());
             service.register(task);
             return ResponseEntity.ok().build();

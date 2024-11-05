@@ -194,7 +194,7 @@
             if (!response.ok) {
                 throw new Error('Erro na API: ' + response.status);
             }
-            return response.json();
+            return ;
         })
         } else if (direction === "down" && divCard.nextElementSibling) {
             resultDiv.insertBefore(divCard, divCard.nextElementSibling.nextElementSibling);
@@ -208,7 +208,7 @@
             if (!response.ok) {
                 throw new Error('Erro na API: ' + response.status);
             }
-            return response.json();
+            return;
         })
         }
 
@@ -216,7 +216,7 @@
 
     }
     const addButton = document.getElementById("add");
-    addButton.onlick=function(){
+    addButton.onclick=function(){
         const newDiv = document.getElementById("newDiv");
         newDiv.style.display="inline-block";
         const saveButton_ = document.getElementById("save_");
