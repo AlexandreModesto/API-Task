@@ -217,7 +217,8 @@
     }
     const addButton = document.getElementById("add");
     addButton.onlick=function(){
-        document.getElementById("newDiv").style.display="inline-block";
+        const newDiv = document.getElementById("newDiv");
+        newDiv.style.display="inline-block";
         const saveButton_ = document.getElementById("save_");
         saveButton_.onclick = function () {
         const dados = {
