@@ -5,7 +5,6 @@
     <title>Task</title>
     <meta http-equiv="X-UA-Compatible" content="IE-edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-git.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -26,173 +25,176 @@
     </div>
 </div>
 <script>
-        const apiUrl = 'https://07e3-2804-14d-6883-8ad5-626e-d3b4-2e2e-fdc1.ngrok-free.app/task/'; // URL da API
+    const apiUrl = 'https://07e3-2804-14d-6883-8ad5-626e-d3b4-2e2e-fdc1.ngrok-free.app/task/'; // URL da API
 
-        function fetchData() {
-            fetch(apiUrl, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'ngrok-skip-browser-warning': 'true'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erro na API: ' + response.status);
-                }
-                return response.json();
-            })
-            .then(data => {
-                const resultDiv = document.getElementById('result');
-                resultDiv.innerHTML = ''; // Limpa resultados anteriores
-                data.forEach((item,index) => {
-                    const divCard =document.createElement("div");
-                    if(item.custo>=1000.00){
-                        divCard.className="card text-bg-warning";
-                    }else{
-                        divCard.className="card";
-                    }
-                    divCard.style.marginBottom="10px";
-                    divCard.id=index;
-                    const tarefa = document.createElement('div');
-                    tarefa.className = "card-body";
+    function fetchData() {
+        fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro na API: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = ''; // Limpa resultados anteriores
+            data.forEach((item, index) => {
+                const divCard = document.createElement("div");
+                divCard.className = item.custo >= 1000.00 ? "card text-bg-warning" : "card";
+                divCard.style.marginBottom = "10px";
+                divCard.id = item.id;  // Usando o id como identificador único
+                const tarefa = document.createElement('div');
+                tarefa.className = "card-body";
 
-                    const title = document.createElement("h4");
-                    title.className = "card-title";
-                    title.textContent=`${item.nomeDaTarefa}`
+                const title = document.createElement("h4");
+                title.className = "card-title";
+                title.textContent = `${item.nomeDaTarefa}`;
 
-                    const div2 = document.createElement('div');
-                    div2.className = "inline";
+                const div2 = document.createElement('div');
+                div2.className = "inline";
 
-                    const div3 = document.createElement('div');
-                    div3.style.display="inline-block";
+                const div3 = document.createElement('div');
+                div3.style.display = "inline-block";
 
-                    const cost = document.createElement('p');
-                    cost.textContent = `Custo: R$ ${item.custo.toFixed(2)}`;
-                    cost.className="card-text";
-                    cost.style.display="inline-block";
-                    cost.style.marginRight="15px";
+                const cost = document.createElement('p');
+                cost.textContent = `Custo: R$ ${item.custo.toFixed(2)}`;
+                cost.className = "card-text";
+                cost.style.display = "inline-block";
+                cost.style.marginRight = "15px";
 
-                    const dateL = document.createElement('p');
-                    const dataLimite = new Date(item.dataLimite);
-                    const dataFormatada = dataLimite.toLocaleDateString('pt-BR', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit'
-                    });
-                    dateL.textContent = `Data Limite: ${dataFormatada}`;
-                    dateL.className="card-text";
-                    dateL.style.display="inline-block";
-
-                    div3.appendChild(cost);
-                    div3.appendChild(dateL);
-
-                    const div4 =document.createElement("div");
-                    div4.style.display="inline-block";
-                    div4.style.marginLeft="50px";
-
-                    const buttonEdit =document.createElement("button")
-                    buttonEdit.className="btn btn-primary"
-                    buttonEdit.textContent="Editar";
-                    buttonEdit.style.marginLeft="5px";
-                    buttonEdit.onclick=function(){
-                        const editDiv = document.getElementById("editDiv");
-                        editDiv.style.display="inline-block";
-                    }
-                    const saveButton = document.getElementById("save");
-                    saveButton.onclick=function(){
-                                            const dados = {
-                                                nomeDaTarefa: document.getElementById("name").value,
-                                                custo: document.getElementById("cost").value,
-                                                dataLimite: document.getElementById("date").value,
-                                                ordemDeApresentacao: `${item.ordemDeApresentacao}`
-                                            };
-                                            fetch(apiUrl+`edit/${item.id}`, {
-                                                method: 'PATCH',
-                                                headers: {
-                                                    'Content-Type': 'application/json'
-                                                },
-                                                body: JSON.stringify(dados)
-                                            })
-                                            .then(response => {
-                                                if (!response.ok) {
-                                                    throw new Error('Erro na API: ' + response.status);
-                                                }
-                                                return location.reload();
-                                            })
-                    }
-
-                    const buttonRemove =document.createElement("button")
-                    buttonRemove.textContent="Excluir";
-                    buttonRemove.style.marginLeft="5px";
-                    buttonRemove.className="btn btn-danger";
-
-                    if(index!==data.lenght-1){
-                        const buttonDown =document.createElement("button")
-                        buttonDown.textContent="Descer";
-                        buttonDown.style.marginLeft="5px";
-                        buttonDown.className="btn btn-secondary";
-                        buttonDown.onclick=function(){
-                                            fetch(apiUrl+`down/${item.id}`, {
-                                                method: 'PUT',
-                                                headers: {
-                                                    'Content-Type': 'application/json'
-                                                }
-                                            })
-                                            .then(response => {
-                                                if (!response.ok) {
-                                                    throw new Error('Erro na API: ' + response.status);
-                                                }
-                                                return location.reload();
-                                            })
-
-                        }
-                        div4.appendChild(buttonDown);
-                    }else{
-                        //pass
-                    }
-                    if(index!==0){
-                        const buttonUp =document.createElement("button")
-                        buttonUp.textContent="Subir";
-                        buttonUp.style.marginLeft="5px";
-                        buttonUp.className="btn btn-secondary";
-                        buttonUp.onclick=function(){
-                                            fetch(apiUrl+`up/${item.id}`, {
-                                                method: 'PUT',
-                                                headers: {
-                                                    'Content-Type': 'application/json'
-                                                }
-                                            })
-                                            .then(response => {
-                                                if (!response.ok) {
-                                                    throw new Error('Erro na API: ' + response.status);
-                                                }
-                                                return location.reload();
-                                            })
-
-                        }
-
-                        div4.appendChild(buttonUp);
-                    }
-                    div4.appendChild(buttonEdit);
-                    div4.appendChild(buttonRemove);
-
-                    div2.appendChild(div3);
-                    div2.appendChild(div4);
-                    tarefa.appendChild(title);
-                    tarefa.appendChild(div2);
-                    divCard.appendChild(tarefa);
-                    resultDiv.appendChild(divCard);
+                const dateL = document.createElement('p');
+                const dataLimite = new Date(item.dataLimite);
+                const dataFormatada = dataLimite.toLocaleDateString('pt-BR', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
                 });
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                const resultDiv = document.getElementById('result');
-                resultDiv.textContent = 'Falha ao carregar os dados.';
+                dateL.textContent = `Data Limite: ${dataFormatada}`;
+                dateL.className = "card-text";
+                dateL.style.display = "inline-block";
+
+                div3.appendChild(cost);
+                div3.appendChild(dateL);
+
+                const div4 = document.createElement("div");
+                div4.style.display = "inline-block";
+                div4.style.marginLeft = "50px";
+
+                const buttonEdit = document.createElement("button");
+                buttonEdit.className = "btn btn-primary";
+                buttonEdit.textContent = "Editar";
+                buttonEdit.style.marginLeft = "5px";
+
+                buttonEdit.onclick = function () {
+                    const editDiv = document.getElementById("editDiv");
+                    editDiv.style.display = "inline-block";
+                };
+
+                const saveButton = document.getElementById("save");
+                saveButton.onclick = function () {
+                    const dados = {
+                        nomeDaTarefa: document.getElementById("name").value,
+                        custo: document.getElementById("cost").value,
+                        dataLimite: document.getElementById("date").value,
+                        ordemDeApresentacao: item.ordemDeApresentacao
+                    };
+                    fetch(apiUrl + `edit/${item.id}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(dados)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erro na API: ' + response.status);
+                        }
+                        return location.reload();
+                    });
+                };
+
+                const buttonRemove = document.createElement("button");
+                buttonRemove.textContent = "Excluir";
+                buttonRemove.style.marginLeft = "5px";
+                buttonRemove.className = "btn btn-danger";
+
+                // Botão Descer
+                const buttonDown = document.createElement("button");
+                buttonDown.textContent = "Descer";
+                buttonDown.style.marginLeft = "5px";
+                buttonDown.className = "btn btn-secondary";
+                buttonDown.onclick = function () {
+                    moveItem(item.id, "down");
+                };
+
+                // Botão Subir
+                const buttonUp = document.createElement("button");
+                buttonUp.textContent = "Subir";
+                buttonUp.style.marginLeft = "5px";
+                buttonUp.className = "btn btn-secondary";
+                buttonUp.onclick = function () {
+                    moveItem(item.id, "up");
+                };
+
+                div4.appendChild(buttonUp);
+                div4.appendChild(buttonDown);
+                div4.appendChild(buttonEdit);
+                div4.appendChild(buttonRemove);
+
+                div2.appendChild(div3);
+                div2.appendChild(div4);
+                tarefa.appendChild(title);
+                tarefa.appendChild(div2);
+                divCard.appendChild(tarefa);
+                resultDiv.appendChild(divCard);
             });
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = 'Falha ao carregar os dados.';
+        });
+    }
+
+    // Função para mover os itens para cima ou para baixo
+    function moveItem(itemId, direction) {
+        const resultDiv = document.getElementById('result');
+        const divCard = document.getElementById(itemId);
+
+        if (direction === "up" && divCard.previousElementSibling) {
+            resultDiv.insertBefore(divCard, divCard.previousElementSibling);
+        } else if (direction === "down" && divCard.nextElementSibling) {
+            resultDiv.insertBefore(divCard, divCard.nextElementSibling.nextElementSibling);
         }
 
-        document.addEventListener('DOMContentLoaded', fetchData);
+        // Enviar a atualização para o servidor
+        fetch(`${apiUrl}${direction}/${itemId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro na API: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(() => {
+            console.log('Ordem atualizada no servidor');
+        })
+        .catch(error => {
+            console.error('Erro ao atualizar a ordem no servidor:', error);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchData);
 </script>
 </body>
 </html>
