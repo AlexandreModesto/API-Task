@@ -124,26 +124,29 @@
                 buttonRemove.style.marginLeft = "5px";
                 buttonRemove.className = "btn btn-danger";
 
-                // Botão Descer
-                const buttonDown = document.createElement("button");
-                buttonDown.textContent = "Descer";
-                buttonDown.style.marginLeft = "5px";
-                buttonDown.className = "btn btn-secondary";
-                buttonDown.onclick = function () {
-                    moveItem(item.id, "down");
-                };
+                // Criar o botão "Descer" e "Subir" se o item não for o primeiro ou o último
+                if (index !== 0) {
+                    const buttonUp = document.createElement("button");
+                    buttonUp.textContent = "Subir";
+                    buttonUp.style.marginLeft = "5px";
+                    buttonUp.className = "btn btn-secondary";
+                    buttonUp.onclick = function () {
+                        moveItem(item.id, "up");
+                    };
+                    div4.appendChild(buttonUp);
+                }
 
-                // Botão Subir
-                const buttonUp = document.createElement("button");
-                buttonUp.textContent = "Subir";
-                buttonUp.style.marginLeft = "5px";
-                buttonUp.className = "btn btn-secondary";
-                buttonUp.onclick = function () {
-                    moveItem(item.id, "up");
-                };
+                if (index !== data.length - 1) {
+                    const buttonDown = document.createElement("button");
+                    buttonDown.textContent = "Descer";
+                    buttonDown.style.marginLeft = "5px";
+                    buttonDown.className = "btn btn-secondary";
+                    buttonDown.onclick = function () {
+                        moveItem(item.id, "down");
+                    };
+                    div4.appendChild(buttonDown);
+                }
 
-                div4.appendChild(buttonUp);
-                div4.appendChild(buttonDown);
                 div4.appendChild(buttonEdit);
                 div4.appendChild(buttonRemove);
 
