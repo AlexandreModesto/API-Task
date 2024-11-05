@@ -169,12 +169,7 @@
 
         if (direction === "up" && divCard.previousElementSibling) {
             resultDiv.insertBefore(divCard, divCard.previousElementSibling);
-        } else if (direction === "down" && divCard.nextElementSibling) {
-            resultDiv.insertBefore(divCard, divCard.nextElementSibling.nextElementSibling);
-        }
-
-        // Enviar a atualização para o servidor
-        fetch(`${apiUrl}${direction}/${itemId}`, {
+                    fetch(`${apiUrl}up/${itemId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -186,12 +181,24 @@
             }
             return response.json();
         })
-        .then(() => {
-            console.log('Ordem atualizada no servidor');
+        } else if (direction === "down" && divCard.nextElementSibling) {
+            resultDiv.insertBefore(divCard, divCard.nextElementSibling.nextElementSibling);
+                    fetch(`${apiUrl}down/${itemId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
         })
-        .catch(error => {
-            console.error('Erro ao atualizar a ordem no servidor:', error);
-        });
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro na API: ' + response.status);
+            }
+            return response.json();
+        })
+        }
+
+
+
     }
 
     document.addEventListener('DOMContentLoaded', fetchData);
