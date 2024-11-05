@@ -139,6 +139,27 @@
                 buttonRemove.style.marginLeft = "5px";
                 buttonRemove.className = "btn btn-danger";
 
+                buttonRemove.onclick = function () {
+                    if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
+                        fetch(apiUrl + `delete/${item.id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Erro na API: ' + response.status);
+                            }
+                            // Remover o item da interface
+                            document.getElementById(item.id).remove();
+                        })
+                        .catch(error => {
+                            console.error('Erro ao excluir a tarefa:', error);
+                        });
+                    }
+                };
+
                 // Botão Descer
                 const buttonDown = document.createElement("button");
                 buttonDown.textContent = "Descer";
