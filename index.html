@@ -12,16 +12,31 @@
 </head>
 <body>
 <div class="container">
-    <h1>Consumo de API com JavaScript</h1>
+    <h1>Tasks</h1>
     <div class="card" id="editDiv" style="display:none">
-        <div class="card-text">
+        <div class="card-body">
+            <div class="card-text"><p>Editar</p>
             Novo Nome: <input type="text" id="name"/>
             Nova Data: <input type="date" id="date"/>
             Novo Custo: <input type="number" min="0.00" max="10000.00" step="0.01" id="cost"/>
+            </div>
             <button class="btn btn-success" id="save">Salvar</button>
         </div>
     </div>
+    <div class="card" id="newDiv" style="display:none">
+        <div class="card-body">
+            <div class="card-text"><p>Criar Task</p>
+                Nome: <input type="text" id="name_"/>
+                Data: <input type="date" id="date_"/>
+                Custo: <input type="number" min="0.00" max="10000.00" step="0.01" id="cost_"/>
+            </div>
+            <button class="btn btn-success" id="save_">Salvar</button>
+        </div>
+    </div>
     <div id="result">
+    </div>
+    <div class="container" style="position:relative">
+        <button class="btn btn-success" style="position:absolute" id="add">Adicionar</button>
     </div>
 </div>
 <script>
@@ -200,7 +215,31 @@
 
 
     }
-
+    const addButton = document.getElementById("add");
+    addButton.onlick=function(){
+        document.getElementById("newDiv").style.display="inline-block";
+        const saveButton_ = document.getElementById("save_");
+        saveButton_.onclick = function () {
+        const dados = {
+                        nomeDaTarefa: document.getElementById("name_").value,
+                        custo: document.getElementById("cost_").value,
+                        dataLimite: document.getElementById("date_").value,
+                    };
+                    fetch(apiUrl + `new`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(dados)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erro na API: ' + response.status);
+                        }
+                        return location.reload();
+                    });
+        }
+    }
     document.addEventListener('DOMContentLoaded', fetchData);
 </script>
 </body>
