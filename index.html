@@ -194,7 +194,7 @@
             if (!response.ok) {
                 throw new Error('Erro na API: ' + response.status);
             }
-            return ;
+            return response.json();
         })
         } else if (direction === "down" && divCard.nextElementSibling) {
             resultDiv.insertBefore(divCard, divCard.nextElementSibling.nextElementSibling);
@@ -208,7 +208,7 @@
             if (!response.ok) {
                 throw new Error('Erro na API: ' + response.status);
             }
-            return;
+            return response.json();
         })
         }
 
