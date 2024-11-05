@@ -243,9 +243,9 @@
         const saveButton_ = document.getElementById("save_");
         saveButton_.onclick = function () {
         const dados = {
-                        nomeDaTarefa: document.getElementById("name_").value,
-                        custo: document.getElementById("cost_").value,
-                        dataLimite: document.getElementById("date_").value,
+                        name: document.getElementById("name_").value,
+                        cost: document.getElementById("cost_").value,
+                        dateLimit: document.getElementById("date_").value,
                     };
                     fetch(apiUrl + `new`, {
                         method: 'POST',
